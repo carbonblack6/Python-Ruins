@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110" role="img" aria-labelledby="title">
+  <title id="title">Spike mouse with raised defensive spikes</title>
+  <rect width="160" height="110" fill="#202b24"/>
+  <g stroke="#3b2b20" stroke-width="4" stroke-linejoin="round">
+    <path d="M43 59 20 43l27 2-12-25 25 18 2-29 17 26 15-24 3 30 26-14-15 25 29 3-26 13z" fill="#f2e7c9" stroke="#392c43"/>
+    <ellipse cx="76" cy="62" rx="42" ry="25" fill="#744f86"/>
+    <circle cx="112" cy="55" r="19" fill="#866094"/>
+    <circle cx="103" cy="38" r="10" fill="#c79fce"/>
+    <circle cx="121" cy="39" r="9" fill="#c79fce"/>
+    <circle cx="119" cy="52" r="3" fill="#17221b" stroke="none"/>
+    <path d="M37 67Q13 79 18 94" fill="none" stroke="#744f86" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <path d="M113 71q9 5 18 0" fill="none" stroke="#3b2b20" stroke-width="3" stroke-linecap="round"/>
+</svg>

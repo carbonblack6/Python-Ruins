@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 120" role="img" aria-labelledby="title">
+  <title id="title">Large temple keeper mouse with leaf crest and venom ball</title>
+  <rect width="180" height="120" fill="#202b24"/>
+  <g stroke="#263124" stroke-width="4">
+    <ellipse cx="82" cy="70" rx="48" ry="30" fill="#111715"/>
+    <circle cx="121" cy="59" r="25" fill="#17452c"/>
+    <circle cx="108" cy="38" r="13" fill="#6f202a"/>
+    <circle cx="135" cy="39" r="13" fill="#6f202a"/>
+    <path d="m86 39 9-27 9 20 12-25 4 28 20-18-8 28z" fill="#2d9149"/>
+    <circle cx="126" cy="54" r="4" fill="#bfff6b" stroke="none"/>
+    <circle cx="138" cy="55" r="4" fill="#ff5048" stroke="none"/>
+    <path d="M38 76Q11 87 17 108" fill="none" stroke="#111715" stroke-width="7" stroke-linecap="round"/>
+  </g>
+  <circle cx="158" cy="76" r="13" fill="#101a12" stroke="#69a941" stroke-width="5"/>
+  <circle cx="154" cy="72" r="3" fill="#8bd24e"/>
+</svg>
