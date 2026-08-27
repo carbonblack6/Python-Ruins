@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#17221b">
   <title>Ruins Python</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20260827-6">
 </head>
 <body>
   <main class="game-shell">
@@ -25,7 +25,7 @@
           <div><span>Condition</span><strong id="condition">Healthy</strong></div>
           <div class="health-track" aria-hidden="true"><i id="health-bar"></i></div>
         </div>
-        <div class="player-block"><span>Explorer</span><strong id="player-display">Not signed in</strong><small><b id="levels-cleared">0</b> / 5 levels cleared</small></div>
+        <div class="player-block"><span>Explorer</span><strong id="player-display">Not signed in</strong><small><b id="levels-cleared">0</b> / 6 levels cleared</small><small><b id="lifetime-score">0</b> mice total / <b id="level-deaths">0</b> deaths here</small></div>
         <div class="legend">
           <p><i class="relic-dot"></i> Healing beetle <span>2 / level</span></p>
           <p><i class="hazard-dot"></i> Ruin hazard <span>-2 size</span></p>
@@ -68,7 +68,7 @@
             <button data-direction="right" aria-label="Move right">&#8594;</button>
           </div>
           <div class="footer-tools">
-            <div class="level-replay"><span>Replay</span><button class="level-tile is-current" type="button" data-replay-level="1"><b>01</b><small>Temple</small></button><button class="level-tile" type="button" data-replay-level="2" disabled><b>02</b><small>Jumpers</small></button><button class="level-tile" type="button" data-replay-level="3" disabled><b>03</b><small>Puddles</small></button><button class="level-tile" type="button" data-replay-level="4" disabled><b>04</b><small>Spikes</small></button><button class="level-tile" type="button" data-replay-level="5" disabled><b>05</b><small>Keeper</small></button></div>
+            <div class="level-replay"><span>Replay</span><button class="level-tile is-current" type="button" data-replay-level="1"><b>01</b><small>Temple</small></button><button class="level-tile" type="button" data-replay-level="2" disabled><b>02</b><small>Jumpers</small></button><button class="level-tile" type="button" data-replay-level="3" disabled><b>03</b><small>Puddles</small></button><button class="level-tile" type="button" data-replay-level="4" disabled><b>04</b><small>Spikes</small></button><button class="level-tile" type="button" data-replay-level="5" disabled><b>05</b><small>Keeper</small></button><button class="level-tile" type="button" data-replay-level="6" disabled><b>06</b><small>Buffet</small></button></div>
             <div class="actions"><button id="pause-button" class="icon-button" type="button" aria-label="Pause game" title="Pause">II</button><button id="reset-button" class="icon-button" type="button" aria-label="Restart game" title="Restart">&#8635;</button></div>
           </div>
         </div>
@@ -83,6 +83,6 @@
       </div>
     </section>
   </main>
-  <script src="game.js"></script>
+  <script src="game.js?v=20260827-6"></script>
 </body>
 </html>
