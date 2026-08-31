@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17221b">
+  <meta name="description" content="Ruins Python is a six-level HTML5 snake adventure through an overgrown temple filled with mice, hazards, flooded ruins, and a hidden boss.">
+  <title>Ruins Python</title>
+  <link rel="icon" href="assets/temple-mouse.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=20260828-3">
+</head>
+<body>
+  <section id="title-screen" class="title-screen" aria-label="Ruins Python title screen">
+    <img class="title-backdrop" src="assets/title-story-cover.webp" alt="The emerald python, rust viper and moon boa entering an overgrown ruined temple while mice scatter" fetchpriority="high" decoding="async">
+    <div class="title-shade"></div>
+    <div class="title-menu">
+      <span>The Overgrown Temple</span>
+      <h2>Ruins Python</h2>
+      <p>Three snakes follow the old mouse trails into a temple that changes with every expedition.</p>
+      <label id="title-player-entry" class="title-player-entry"><span>Explorer name</span><input id="title-player-name" type="text" maxlength="18" autocomplete="nickname" placeholder="Enter your name"><small>Name your explorer before entering.</small></label>
+      <strong id="title-player-welcome" class="title-player-welcome" hidden></strong>
+      <nav class="title-actions" aria-label="Main menu">
+        <button id="title-start" class="primary-title-action" type="button">Start expedition <span aria-hidden="true">&#8594;</span></button>
+        <button id="title-leaderboard" type="button">Leaderboard</button>
+        <button id="title-artwork" type="button">Artwork</button>
+      </nav>
+    </div>
+    <section id="title-drawer" class="title-drawer" hidden>
+      <header><div><span id="drawer-kicker">Archives</span><h3 id="drawer-title">Expedition artwork</h3></div><button id="drawer-close" type="button" aria-label="Close panel" title="Close">&#215;</button></header>
+      <div id="leaderboard-view" class="leaderboard-view" hidden></div>
+      <div id="artwork-view" class="artwork-view" hidden></div>
+    </section>
+  </section>
+  <main class="game-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div><p>THE OVERGROWN TEMPLE</p><h1>RUINS PYTHON</h1></div>
+      </div>
+    </header>
+
+    <section class="game-grid">
+      <aside class="hud" aria-label="Game status">
+        <div class="stat main-stat"><span>Mice caught</span><strong><b id="score">0</b> / <i id="mouse-goal">10</i></strong></div>
+        <div class="stat"><span>Snake size</span><strong id="length">5</strong></div>
+        <div class="health-block">
+          <div><span>Condition</span><strong id="condition">Healthy</strong></div>
+          <div class="health-track" aria-hidden="true"><i id="health-bar"></i></div>
+        </div>
+      </aside>
+
+      <div class="play-column">
+        <div id="canvas-frame" class="canvas-frame">
+          <canvas id="game-canvas" width="980" height="630" aria-label="Ruins Python snake game"></canvas>
+          <button id="next-level-button" class="map-next-button" type="button" hidden>Go to level 2 <span aria-hidden="true">&#8594;</span></button>
+          <aside id="unlock-toast" class="unlock-toast" aria-live="polite" hidden><span>New dossier</span><strong id="unlock-title">Level unlocked</strong><small id="unlock-copy">Artwork recovered</small></aside>
+          <div id="overlay" class="overlay">
+            <div class="overlay-panel">
+              <div id="intro-art" class="intro-art"><img id="intro-image" src="assets/intro-cover-v2.webp" alt="Three friendly snakes and visible mice in the overgrown ruins" decoding="async"></div>
+              <div id="completion-art" class="completion-art" hidden><img id="completion-image" src="assets/level-complete-cover.webp" alt="Happy snake smiling in the reclaimed ruins with a mouse tail at its mouth" decoding="async"></div>
+              <span id="overlay-label">EXPEDITION 01</span>
+              <h2 id="overlay-title">The ruins are hungry.</h2>
+              <p id="overlay-copy">Guide the python through the temple. Eat ten mice. Ruin hazards tear away two body segments.</p>
+              <section id="boss-lore" class="boss-lore" hidden aria-label="Temple keeper lore">
+                <img src="assets/boss-lore.webp" alt="The dark temple keeper conjuring a black-green venom orb" loading="lazy" decoding="async">
+                <div><span>Keeper dossier</span><strong>The Blightwarden</strong><p>It guards the root shrine and studies every route through the garden.</p></div>
+                <ol class="boss-steps"><li><b>Catch 10 mice</b> to draw the keeper out.</li><li><b>Collect the glowing water fruit</b> that rises from a pond.</li><li><b>Dodge its venom shots</b> while closing the distance.</li><li><b>Bite the boss after collecting the fruit</b> to defeat it.</li></ol>
+              </section>
+              <label id="player-entry" class="player-entry" hidden><span>Player name</span><input id="player-name" type="text" maxlength="18" autocomplete="nickname" placeholder="Enter your name" required><small id="name-error">A name is required to enter the ruins.</small></label>
+              <div id="snake-choices" class="snake-choices" aria-label="Choose a snake">
+                <button class="snake-choice is-selected" type="button" data-skin="python"><i class="mini-snake skin-python"><b></b><b></b><b></b><b></b><b class="head"></b></i><span>Emerald python</span></button>
+                <button class="snake-choice" type="button" data-skin="viper"><i class="mini-snake skin-viper"><b></b><b></b><b></b><b></b><b class="head"></b></i><span>Rust viper</span></button>
+                <button class="snake-choice" type="button" data-skin="boa"><i class="mini-snake skin-boa"><b></b><b></b><b></b><b></b><b class="head"></b></i><span>Moon boa</span></button>
+              </div>
+              <div id="lost-menu" class="lost-menu" hidden>
+                <span>Choose an unlocked level</span>
+                <div class="lost-levels"><button type="button" data-lost-level="1">01</button><button type="button" data-lost-level="2">02</button><button type="button" data-lost-level="3">03</button><button type="button" data-lost-level="4">04</button><button type="button" data-lost-level="5">05</button><button type="button" data-lost-level="6">06</button></div>
+                <button id="lost-main-menu" class="lost-main-menu" type="button">Return to main menu</button>
+              </div>
+              <button id="start-button" type="button">Enter the ruins <span aria-hidden="true">&#8594;</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-footer">
+          <div class="footer-status" aria-label="Player and expedition status">
+            <div class="footer-player"><span>Explorer</span><strong id="player-display">Not signed in</strong></div>
+            <div><span>Current expedition</span><strong id="goal-text">Level 1 / Eat 10 mice</strong></div>
+            <div><span>Levels cleared</span><strong><b id="levels-cleared">0</b> / 6</strong></div>
+            <div><span>Lifetime mice</span><strong id="lifetime-score">0</strong></div>
+            <div><span>Deaths here</span><strong id="level-deaths">0</strong></div>
+          </div>
+          <div class="control-strip"><span class="run-light"></span><strong id="run-state">READY</strong><i></i><p><kbd>WASD</kbd> <b>or</b> <kbd>ARROWS</kbd> <b>to move</b></p><i></i><p><kbd>SPACE</kbd> <b>to pause</b></p><p id="edge-rule" class="edge-rule" hidden>Secret garden: cross an outer edge to emerge from the opposite side.</p></div>
+          <div class="dpad" aria-label="Touch controls">
+            <button data-direction="up" aria-label="Move up">&#8593;</button>
+            <button data-direction="left" aria-label="Move left">&#8592;</button>
+            <button data-direction="down" aria-label="Move down">&#8595;</button>
+            <button data-direction="right" aria-label="Move right">&#8594;</button>
+          </div>
+          <div class="footer-tools">
+            <div class="level-replay"><span>Replay</span><button class="level-tile is-current" type="button" data-replay-level="1"><b>01</b><small>Temple</small></button><button class="level-tile" type="button" data-replay-level="2" disabled><b>02</b><small>Jumpers</small></button><button class="level-tile" type="button" data-replay-level="3" disabled><b>03</b><small>Puddles</small></button><button class="level-tile" type="button" data-replay-level="4" disabled><b>04</b><small>Spikes</small></button><button class="level-tile" type="button" data-replay-level="5" disabled><b>05</b><small>Keeper</small></button><button class="level-tile" type="button" data-replay-level="6" disabled><b>06</b><small>Buffet</small></button></div>
+            <div class="actions"><button id="pause-button" class="icon-button" type="button" aria-label="Pause game" title="Pause"><span>II</span></button><button id="reset-button" class="icon-button" type="button" aria-label="Restart game" title="Restart"><span>&#8635;</span></button></div>
+          </div>
+        </div>
+        <details class="mouse-guide field-guide-band">
+          <summary>Mouse field guide</summary>
+          <div class="field-guide-content">
+          <article><img src="assets/temple-mouse.svg" alt="Brown temple mouse" loading="lazy" decoding="async"><div><strong>Temple mouse</strong><small>Level 1</small><p>A common ruins scavenger. Catch it to grow by one segment.</p></div></article>
+          <article><img src="assets/jumper-mouse.svg" alt="Blue striped jumping mouse" loading="lazy" decoding="async"><div><strong>Striped jumper</strong><small>Level 2</small><p>Gets one 50% chance to leap two tiles when approached.</p></div></article>
+          <article><img src="assets/water-mouse-guide.jpg" alt="Aqua water mouse with large pink ears and feet" loading="lazy" decoding="async"><div><strong>Water mouse</strong><small>Level 3</small><p>Gets one 60% chance to shift from its puddle to another.</p></div></article>
+          <article><img src="assets/spike-mouse-guide.jpg" alt="Violet spike mouse with pale defensive spikes" loading="lazy" decoding="async"><div><strong>Spike mouse</strong><small>Level 4</small><p>Never jumps. Fires one spike up to three tiles; bite after it fires.</p></div></article>
+          <article><img src="assets/pond-toad-lotus-v2.jpg" alt="Green pond toad sitting on a pink lotus petal and catching a fly with its tongue" loading="lazy" decoding="async"><div><strong>Lotus toad</strong><small>Pond bonus</small><p>Sometimes sits on a lotus petal hunting flies. Catch it for up to two health segments.</p></div></article>
+          <article><img src="assets/boss-lore.webp" alt="Illustrated temple keeper mouse" loading="lazy" decoding="async"><div><strong>Temple keeper</strong><small>Level 5 boss</small><p>Retreats when approached; stays outside only after ten mice.</p></div></article>
+          </div>
+        </details>
+      </div>
+    </section>
+    <footer class="copyright">&copy; 2026 Sumanjit Singh. All rights reserved.</footer>
+  </main>
+  <script src="game.js?v=20260831-12"></script>
+</body>
+</html>
