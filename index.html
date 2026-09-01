@@ -7,7 +7,7 @@
   <meta name="description" content="Ruins Python is a six-level HTML5 snake adventure through an overgrown temple filled with mice, hazards, flooded ruins, and a hidden boss.">
   <title>Ruins Python</title>
   <link rel="icon" href="assets/temple-mouse.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260828-3">
+  <link rel="stylesheet" href="styles.css?v=20260901-7">
 </head>
 <body>
   <section id="title-screen" class="title-screen" aria-label="Ruins Python title screen">
@@ -63,8 +63,8 @@
               <p id="overlay-copy">Guide the python through the temple. Eat ten mice. Ruin hazards tear away two body segments.</p>
               <section id="boss-lore" class="boss-lore" hidden aria-label="Temple keeper lore">
                 <img src="assets/boss-lore.webp" alt="The dark temple keeper conjuring a black-green venom orb" loading="lazy" decoding="async">
-                <div><span>Keeper dossier</span><strong>The Blightwarden</strong><p>It guards the root shrine and studies every route through the garden.</p></div>
-                <ol class="boss-steps"><li><b>Catch 10 mice</b> to draw the keeper out.</li><li><b>Collect the glowing water fruit</b> that rises from a pond.</li><li><b>Dodge its venom shots</b> while closing the distance.</li><li><b>Bite the boss after collecting the fruit</b> to defeat it.</li></ol>
+                <div><span>Keeper dossier</span><strong>The Blightwarden</strong><p>The ancient Keeper watches the root shrine from the shadows. Ten mouse guards patrol the temple for it and must be defeated before their master will emerge.</p></div>
+                <div class="boss-hint"><p>Old carvings speak of a strange fruit rising from the water. They say a snake that eats it is guarded from the Keeper&rsquo;s corruption&mdash;and only then should the hunter dare strike the boss.</p></div>
               </section>
               <label id="player-entry" class="player-entry" hidden><span>Player name</span><input id="player-name" type="text" maxlength="18" autocomplete="nickname" placeholder="Enter your name" required><small id="name-error">A name is required to enter the ruins.</small></label>
               <div id="snake-choices" class="snake-choices" aria-label="Choose a snake">
@@ -107,9 +107,9 @@
           <div class="field-guide-content">
           <article><img src="assets/temple-mouse.svg" alt="Brown temple mouse" loading="lazy" decoding="async"><div><strong>Temple mouse</strong><small>Level 1</small><p>A common ruins scavenger. Catch it to grow by one segment.</p></div></article>
           <article><img src="assets/jumper-mouse.svg" alt="Blue striped jumping mouse" loading="lazy" decoding="async"><div><strong>Striped jumper</strong><small>Level 2</small><p>Gets one 50% chance to leap two tiles when approached.</p></div></article>
-          <article><img src="assets/water-mouse-guide.jpg" alt="Aqua water mouse with large pink ears and feet" loading="lazy" decoding="async"><div><strong>Water mouse</strong><small>Level 3</small><p>Gets one 60% chance to shift from its puddle to another.</p></div></article>
+          <article><img src="assets/water-mouse-orange-v2.jpg" alt="Aqua water mouse with large orange ears and feet" loading="lazy" decoding="async"><div><strong>Water mouse</strong><small>Level 3</small><p>Orange ears and feet make it readable in water. It may shift to another pond when approached.</p></div></article>
           <article><img src="assets/spike-mouse-guide.jpg" alt="Violet spike mouse with pale defensive spikes" loading="lazy" decoding="async"><div><strong>Spike mouse</strong><small>Level 4</small><p>Never jumps. Fires one spike up to three tiles; bite after it fires.</p></div></article>
-          <article><img src="assets/pond-toad-lotus-v2.jpg" alt="Green pond toad sitting on a pink lotus petal and catching a fly with its tongue" loading="lazy" decoding="async"><div><strong>Lotus toad</strong><small>Pond bonus</small><p>Sometimes sits on a lotus petal hunting flies. Catch it for up to two health segments.</p></div></article>
+          <article><img src="assets/pond-toad-lotus-leaf-v3.jpg" alt="Full-size green frog sitting on a broad lotus leaf and catching a fly with its tongue" loading="lazy" decoding="async"><div><strong>Lotus frog</strong><small>Pond bonus</small><p>Sometimes sits on a broad lotus leaf hunting flies. Catch it for limited healing up to maximum health.</p></div></article>
           <article><img src="assets/boss-lore.webp" alt="Illustrated temple keeper mouse" loading="lazy" decoding="async"><div><strong>Temple keeper</strong><small>Level 5 boss</small><p>Retreats when approached; stays outside only after ten mice.</p></div></article>
           </div>
         </details>
@@ -117,6 +117,6 @@
     </section>
     <footer class="copyright">&copy; 2026 Sumanjit Singh. All rights reserved.</footer>
   </main>
-  <script src="game.js?v=20260831-12"></script>
+  <script src="game.js?v=20260901-17"></script>
 </body>
 </html>
