@@ -70,7 +70,7 @@ function sound(name,variant='normal'){try{audioContext||=new(window.AudioContext
 function terrainSound(cell){const terrain=inPuddleCell(cell)?'water':inQuicksand(cell)?'sand':'';if(terrain&&terrain!==lastTerrainSound)sound(terrain);lastTerrainSound=terrain}
 
 function resetGame(showIntro=true,targetLevel=level){
-  movementArmed=false;lastTerrainSound='';soundTimes={};
+  movementArmed=false;if(typeof audio!=='undefined')audio.reset();else{lastTerrainSound='';soundTimes={}};
   floorPixels=null;floorCacheKey='';
   setPauseIcon(false);
   mouseHealthBank=.3;
@@ -157,11 +157,25 @@ function step(){
   else snake.pop();
 }
 
-const keyMap={ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};
-window.addEventListener('keydown',event=>{if(event.target instanceof HTMLInputElement)return;if(keyMap[event.key]){event.preventDefault();setDirection(keyMap[event.key])}else if(event.code==='Space'){event.preventDefault();pauseGame()}else if(event.key.toLowerCase()==='r')resetGame(false)});
-document.querySelectorAll('[data-direction]').forEach(button=>button.addEventListener('pointerdown',()=>setDirection(button.dataset.direction)));
-let swipeStart=null;canvas.addEventListener('pointerdown',e=>{swipeStart={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',e=>{if(!swipeStart)return;const dx=e.clientX-swipeStart.x,dy=e.clientY-swipeStart.y;swipeStart=null;if(Math.hypot(dx,dy)<18)return;setDirection(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'))});
-ui.start.addEventListener('click',startGame);ui.pause.addEventListener('click',pauseGame);ui.reset.addEventListener('click',()=>resetGame(false));
+class Audio{
+  play(name,variant='normal'){sound(name,variant)}
+  terrain(cell){terrainSound(cell)}
+  reset(){lastTerrainSound='';soundTimes={}}
+}
+class Game{
+  start(){startGame()}
+  pause(){pauseGame()}
+  reset(showIntro=false,targetLevel=level){resetGame(showIntro,targetLevel)}
+  move(direction){setDirection(direction)}
+}
+class Input{
+  constructor(game,surface){this.game=game;this.surface=surface;this.swipeStart=null;this.keyMap={ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};this.bind()}
+  bind(){window.addEventListener('keydown',event=>this.onKey(event));document.querySelectorAll('[data-direction]').forEach(button=>button.addEventListener('pointerdown',()=>this.game.move(button.dataset.direction)));this.surface.addEventListener('pointerdown',event=>{this.swipeStart={x:event.clientX,y:event.clientY}});this.surface.addEventListener('pointerup',event=>this.onSwipe(event))}
+  onKey(event){if(event.target instanceof HTMLInputElement||event.target instanceof HTMLSelectElement)return;if(this.keyMap[event.key]){event.preventDefault();this.game.move(this.keyMap[event.key])}else if(event.code==='Space'){event.preventDefault();this.game.pause()}else if(event.key.toLowerCase()==='r')this.game.reset(false)}
+  onSwipe(event){if(!this.swipeStart)return;const dx=event.clientX-this.swipeStart.x,dy=event.clientY-this.swipeStart.y;this.swipeStart=null;if(Math.hypot(dx,dy)<18)return;this.game.move(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'))}
+}
+const game=new Game(),audio=new Audio(),input=new Input(game,canvas);
+ui.start.addEventListener('click',()=>game.start());ui.pause.addEventListener('click',()=>game.pause());ui.reset.addEventListener('click',()=>game.reset(false));
 ui.next.addEventListener('click',()=>transitionToLevel(Math.min(6,level+1)));
 ui.playerInput.addEventListener('input',()=>{ui.playerEntry.classList.remove('has-error');ui.playerInput.removeAttribute('aria-invalid')});ui.playerInput.addEventListener('keydown',event=>{if(event.key==='Enter')startGame()});
 function chooseSkin(name){if(!skins[name])return;skinName=name;document.querySelectorAll('.snake-choice').forEach(choice=>choice.classList.toggle('is-selected',choice.dataset.skin===name))}
@@ -277,5 +291,9 @@ function drawSnake(){
   ctx.restore();
 }
 function drawParticles(dt){particles.forEach(p=>{p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.96;p.vy*=.96;ctx.globalAlpha=Math.max(0,p.life*2);ctx.fillStyle=p.color;ctx.fillRect(p.x-3,p.y-3,6,6)});ctx.globalAlpha=1;particles=particles.filter(p=>p.life>0)}
-function frame(now){if(state==='running'&&crocTurnPending&&now>=crocBiteUntil){crocTurnPending=false;turnAwayFromCroc();lastStep=now}if(state==='running'&&movementArmed&&!crocTurnPending&&now-lastWorldStep>=MOVE_TICKS.python){lastWorldStep=now;updateLevel5MouseSpawn();updateLevel4SpikeMouse();updateBossGuard();if(mouse&&mouse.type==='boss')updateBoss(snake[0]);updateSpikes()}const headInQuicksand=(level===4||level===5)&&inQuicksand(snake[0]),quicksandSlow=headInQuicksand?2:1,tick=MOVE_TICKS[skinName]*quicksandSlow;if(state==='running'&&movementArmed&&!crocTurnPending&&now-lastStep>=tick){lastStep=now;step()}drawFloor();drawQuicksand();drawPuddles();drawPondGuardian();if(level!==6)drawLevel5Flora();drawTemple();drawCaveSkull();drawBossCactus();drawCanopyBase();hazards.forEach(drawHazard);if(level===4){ctx.save();ctx.globalAlpha=.82;drawDryCacti();drawDryCactusBushes();ctx.restore()}drawRelic();drawToad();if(mouse)drawMouse();drawExtraMouse();drawBossGuard();drawSpikes();drawSnake();drawParticles(Math.min(.03,(now-(frame.last||now))/1000));if(level===6){ctx.save();ctx.globalAlpha=.72;drawBonusBushes();ctx.restore()}drawCanopyTop();drawResistanceFruit();frame.last=now;if(flash>0){ctx.fillStyle=`rgba(163,77,50,${flash*.35})`;ctx.fillRect(0,0,W,H);flash-=.08}requestAnimationFrame(frame)}
-const launchParams=new URLSearchParams(location.search||location.hash.slice(1)),previewLevel=Number(launchParams.get('previewLevel')),rawLevel=[1,2,3,4,5,6].includes(previewLevel)?previewLevel:Number(launchParams.get('level')),developerMode=launchParams.get('dev')==='1'||[1,2,3,4,5,6].includes(previewLevel);loadProgress();syncTitleIdentity();const requestedLevel=[1,2,3,4,5,6].includes(rawLevel)&&(developerMode||rawLevel<=Math.min(6,levelsCleared+1))?rawLevel:1;chooseSkin(launchParams.get('snake')||'python');resetGame(true,requestedLevel);if(developerMode&&(launchParams.get('preview')==='1'||previewLevel)){menuUI.screen.hidden=true;state='ready';ui.overlay.hidden=true;setRunState('PRESS A DIRECTION')}requestAnimationFrame(frame);
+class Renderer{
+  constructor(game){this.game=game;this.last=0;this.frame=this.frame.bind(this)}
+  start(){requestAnimationFrame(this.frame)}
+  frame(now){if(state==='running'&&crocTurnPending&&now>=crocBiteUntil){crocTurnPending=false;turnAwayFromCroc();lastStep=now}if(state==='running'&&movementArmed&&!crocTurnPending&&now-lastWorldStep>=MOVE_TICKS.python){lastWorldStep=now;updateLevel5MouseSpawn();updateLevel4SpikeMouse();updateBossGuard();if(mouse&&mouse.type==='boss')updateBoss(snake[0]);updateSpikes()}const headInQuicksand=(level===4||level===5)&&inQuicksand(snake[0]),quicksandSlow=headInQuicksand?2:1,tick=MOVE_TICKS[skinName]*quicksandSlow;if(state==='running'&&movementArmed&&!crocTurnPending&&now-lastStep>=tick){lastStep=now;step()}drawFloor();drawQuicksand();drawPuddles();drawPondGuardian();if(level!==6)drawLevel5Flora();drawTemple();drawCaveSkull();drawBossCactus();drawCanopyBase();hazards.forEach(drawHazard);if(level===4){ctx.save();ctx.globalAlpha=.82;drawDryCacti();drawDryCactusBushes();ctx.restore()}drawRelic();drawToad();if(mouse)drawMouse();drawExtraMouse();drawBossGuard();drawSpikes();drawSnake();drawParticles(Math.min(.03,(now-(this.last||now))/1000));if(level===6){ctx.save();ctx.globalAlpha=.72;drawBonusBushes();ctx.restore()}drawCanopyTop();drawResistanceFruit();this.last=now;if(flash>0){ctx.fillStyle=`rgba(163,77,50,${flash*.35})`;ctx.fillRect(0,0,W,H);flash-=.08}requestAnimationFrame(this.frame)}
+}
+const launchParams=new URLSearchParams(location.search||location.hash.slice(1)),previewLevel=Number(launchParams.get('previewLevel')),rawLevel=[1,2,3,4,5,6].includes(previewLevel)?previewLevel:Number(launchParams.get('level')),developerMode=launchParams.get('dev')==='1'||[1,2,3,4,5,6].includes(previewLevel);loadProgress();syncTitleIdentity();const requestedLevel=[1,2,3,4,5,6].includes(rawLevel)&&(developerMode||rawLevel<=Math.min(6,levelsCleared+1))?rawLevel:1;chooseSkin(launchParams.get('snake')||'python');resetGame(true,requestedLevel);if(developerMode&&(launchParams.get('preview')==='1'||previewLevel)){menuUI.screen.hidden=true;state='ready';ui.overlay.hidden=true;setRunState('PRESS A DIRECTION')}const renderer=new Renderer(game);renderer.start();
